@@ -5,7 +5,7 @@ const DOGECOIN_ID = 74
 const url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
 const apikey_header_name = 'X-CMC_PRO_API_KEY'
 
-const api = async (req: NextApiRequest, res: NextApiResponse) => {
+const api = async (_: NextApiRequest, res: NextApiResponse) => {
   // make it so value only updates every 5 minutes to prevent overusing api requests
   res.setHeader('cache-control', 's-maxage=300')
 
