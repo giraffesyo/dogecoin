@@ -15,16 +15,14 @@ const api = async (_: NextApiRequest, res: NextApiResponse) => {
   // make it so value only updates every 5 minutes to prevent overusing api requests
   res.setHeader('Cache-Control', 's-maxage=300, public')
 
-  let price = 0.05
   try {
-    price = await getPrice()
+    const price = await getPrice()
+    return res.json({ error: false, price })
   } catch (e) {
-    price = 0.05
+    const price = 0.05
     console.error(e)
-    return res.json({ error: true, price })
+    return res.status(500).json({ error: true, message: e.message, price })
   }
-
-  return res.json({ error: false, price })
 }
 
 const getPrice = async () => {
