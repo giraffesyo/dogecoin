@@ -7,7 +7,7 @@ const apikey_header_name = 'X-CMC_PRO_API_KEY'
 
 const api = async (_: NextApiRequest, res: NextApiResponse) => {
   // make it so value only updates every 5 minutes to prevent overusing api requests
-  res.setHeader('Cache-Control', 's-maxage=300')
+  res.setHeader('Cache-Control', 'public,s-maxage=300')
 
   if (!apikey) {
     return res
