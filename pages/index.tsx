@@ -1,15 +1,12 @@
-import Link from 'next/link'
-import Layout from '../components/Layout'
+export async function getStaticProps() {
+  return {
+    redirect: {
+      permanent: true,
+      destination: 'https://giraffesyo.io',
+    },
+  }
+}
 
-const IndexPage = () => (
-  <Layout title="Home | Next.js + TypeScript Example">
-    <h1>Hello Next.js 👋</h1>
-    <p>
-      <Link href="/about">
-        <a>About</a>
-      </Link>
-    </p>
-  </Layout>
-)
+const IndexPage = () => <p>This isn't a real app.</p>
 
 export default IndexPage
