@@ -5,25 +5,26 @@ const DOGECOIN_ID = 74
 const url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
 const apikey_header_name = 'X-CMC_PRO_API_KEY'
 
+// crash the build if we dont have an api key
+if (!apikey) {
+  console.error('No API key in environment')
+  process.exit(1)
+}
+
 const api = async (_: NextApiRequest, res: NextApiResponse) => {
   // make it so value only updates every 5 minutes to prevent overusing api requests
   res.setHeader('Cache-Control', 's-maxage=300, public')
 
-  if (!apikey) {
-    return res
-      .status(500)
-      .json({ error: true, message: 'No API key in environment' })
-  }
   let price = 0.05
   try {
     price = await getPrice()
   } catch (e) {
     price = 0.05
     console.error(e)
-    return res.status(500).json({ error: true, price })
+    return res.json({ error: true, price })
   }
 
-  return res.status(500).json({ error: false, price })
+  return res.json({ error: false, price })
 }
 
 const getPrice = async () => {
