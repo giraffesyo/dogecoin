@@ -6,23 +6,24 @@ const url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
 const apikey_header_name = 'X-CMC_PRO_API_KEY'
 
 const api = async (req: NextApiRequest, res: NextApiResponse) => {
-  const dev = req.query.dev
+  // make it so value only updates every 5 minutes to prevent overusing api requests
+  res.setHeader('cache-control', 's-maxage=300')
+
   if (!apikey) {
     return res
       .status(500)
-      .json({ error: true, dev: !!dev, message: 'No API key in environment' })
+      .json({ error: true, message: 'No API key in environment' })
   }
   let price = 0.05
-  if (!dev) {
-    try {
-      price = await getPrice()
-    } catch (e) {
-      price = 0.05
-      console.error(e)
-      return res.status(500).json({ error: true, dev: !!dev, price })
-    }
+  try {
+    price = await getPrice()
+  } catch (e) {
+    price = 0.05
+    console.error(e)
+    return res.status(500).json({ error: true, price })
   }
-  return res.status(500).json({ error: false, dev: !!dev, price })
+
+  return res.status(500).json({ error: false, price })
 }
 
 const getPrice = async () => {
